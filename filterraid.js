@@ -19,7 +19,7 @@ if (typeof isFirstTime === 'undefined') {
 }
 
 var filterMonIds = [];
-var filterForms = [33,34,35,36];
+var filterForms = [];
 var isFilterForm = false;
 var timeLessFilter = Number.MAX_VALUE;
 var timeMoreFilter = 0;
@@ -234,7 +234,8 @@ if (isFirstTime) {
     $('.filter_checkbox').first().before('<input id="mon_filter" class="inserted_filter" type="search" placeholder="Filter"/><div class="inserted_filter" id="time_filter">><input id="more_filter" type="search" placeholder="End (Min)"/> <<input id="less_filter" type="search" placeholder="Hatch (Min)"/></div>');
     $('.filter_checkbox').first().after('<div class="filter_checkbox"> <input id="checkbox_raid_non_boosted" type="checkbox" value="boosted"><label for="checkbox_raid_non_boosted"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDUxMiA1MTIiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggZD0iTTAsNTEyaDEzOS42VjM3Mi40SDBWNTEyeiBNNDYuNSw0MTguOWg0Ni41djQ2LjVINDYuNVY0MTguOXogTTAsMTM5LjZoMTM5LjZWMEgwVjEzOS42eiBNMCwzMjUuOGgxMzkuNlYxODYuMkgwVjMyNS44eg0KCSBNNDYuNSwyMzIuN2g0Ni41djQ2LjVINDYuNVYyMzIuN3ogTTIwOS41LDBjMTYyLjksOTMuMSwyNDQuNCwyMjEuMSw1OC4yLDMzNy41TDE4Ni4yLDI1NnYyNTZoMjU2bC04MS41LTgxLjUNCglDNjA1LjEsMTg2LjIsMzcyLjQsMCwyMDkuNSwweiIvPg0KPC9zdmc+DQo=" style="width:20px; height: 20px"> Non Weather boosted only</label> </div>');
     $('.filter_checkbox').first().after('<div class="filter_checkbox"> <input id="checkbox_mrt_only" type="checkbox" value="boosted"><label for="checkbox_mrt_only"><img src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBTdmcgVmVjdG9yIEljb25zIDogaHR0cDovL3d3dy5vbmxpbmV3ZWJmb250cy5jb20vaWNvbiAtLT4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwMCAxMDAwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxMDAwIDEwMDAiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8bWV0YWRhdGE+IFN2ZyBWZWN0b3IgSWNvbnMgOiBodHRwOi8vd3d3Lm9ubGluZXdlYmZvbnRzLmNvbS9pY29uIDwvbWV0YWRhdGE+CjxnPjxwYXRoIGQ9Ik03MTUuOSw1MS41aC01OC4xdi04LjNjMC0xNi42LTE2LjYtMzMuMi0zMy4yLTMzLjJIMzY3LjFjLTE2LjYsMC0zMy4yLDE2LjYtMzMuMiwzMy4ydjguM2gtNDkuOGMtOTEuNCwwLTE2Ni4xLDc0LjctMTY2LjEsMTY2LjF2MzczLjdjMCw5MS40LDc0LjcsMTY2LjEsMTY2LjEsMTY2LjFoNDMxLjljOTEuNCwwLDE2Ni4xLTc0LjcsMTY2LjEtMTY2LjFWMjE3LjZDODgyLDEyNi4zLDgwNy4zLDUxLjUsNzE1LjksNTEuNXogTTMxNy4zLDY3NC40Yy00MS41LDAtODMuMS0zMy4yLTgzLjEtNzQuN2MwLTQxLjUsMzMuMi03NC43LDgzLjEtNzQuN2M0OS44LDAsODMuMSwzMy4yLDgzLjEsNzQuN0MzOTIsNjQxLjIsMzU4LjgsNjc0LjQsMzE3LjMsNjc0LjR6IE02OTEsNjc0LjRjLTQxLjUsMC04My4xLTMzLjItODMuMS03NC43YzAtNDEuNSwzMy4yLTc0LjcsODMuMS03NC43YzQ5LjgsMCw4My4xLDMzLjIsODMuMSw3NC43Qzc3NC4xLDY0MS4yLDczMi41LDY3NC40LDY5MSw2NzQuNHogTTc5MC43LDQwMC4zdjguM0gyMDkuM1YyMjUuOWMwLTU4LjEsNDkuOC0xMDgsMTE2LjMtMTA4aDM0MC41YzY2LjQsMCwxMTYuMyw0OS44LDExNi4zLDEwOHYxNzQuNEg3OTAuN3oiLz48cGF0aCBkPSJNMjAxLDk5MGMtOC4zLDAtOC4zLDAtMTYuNi04LjNjLTguMy04LjMtOC4zLTI0LjksMC0zMy4ybDE0OS41LTE0MS4yYzguMy04LjMsMjQuOS04LjMsMzMuMiwwYzguMyw4LjMsOC4zLDI0LjksMCwzMy4yTDIxNy42LDk4MS43QzIwOS4zLDk5MCwyMDkuMyw5OTAsMjAxLDk5MHoiLz48cGF0aCBkPSJNODA3LjMsOTkwYy04LjMsMC04LjMsMC0xNi42LTguM0w2NDkuNSw4NDAuNWMtOC4zLTguMy04LjMtMjQuOSwwLTMzLjJjOC4zLTguMywyNC45LTguMywzMy4yLDBsMTQxLjIsMTQxLjJjOC4zLDguMyw4LjMsMjQuOSwwLDMzLjJDODE1LjYsOTkwLDgwNy4zLDk5MCw4MDcuMyw5OTB6Ii8+PC9nPgo8L3N2Zz4=" style="width:20px; height: 20px"> MRT only</label> <input id="mrt_distance" type="search" placeholder="MRT Radius" value="100"/>m</div>');
-    $('.filter_checkbox').first().before('<div class="filter_checkbox deoxys"> <input id="form_normal"  name="form" type="checkbox" value="33" checked><label for="form_normal">Normal</label>  <input id="form_attack"  name="form" type="checkbox" value="34" checked><label for="form_attack">Attack</label> <input id="form_defence"  name="form" type="checkbox" value="35" checked><label for="form_defence">Defence</label> <input id="form_speed"  name="form" type="checkbox" value="36" checked><label for="form_speed">Speed</label> </div> <style>.filter_checkbox.deoxys{display:none}</style>');
+    $('.filter_checkbox').first().before('<div class="filter_checkbox deoxys"> <input id="form_normal"  name="form" type="checkbox" value="33" ><label for="form_normal">Normal</label>  <input id="form_attack"  name="form" type="checkbox" value="34" ><label for="form_attack">Attack</label> <input id="form_defence"  name="form" type="checkbox" value="35" ><label for="form_defence">Defence</label> <input id="form_speed"  name="form" type="checkbox" value="36" ><label for="form_speed">Speed</label> </div> <style>.filter_checkbox.deoxys{display:none}</style>');
+    $('.filter_checkbox').first().before('<div class="filter_checkbox rockruff"> <input id="form_normal"  name="form" type="checkbox" value="2831" ><label for="form_normal">Normal</label>  <input id="form_dusk"  name="form" type="checkbox" value="2737" ><label for="form_dusk">Dusk</label> </div> <style>.filter_checkbox.rockruff{display:none}</style>');
     $("body").append('<style>.inserted_filter{margin:0 0 12px 4px; display: block;} #time_filter input {width: 80px} #mrt_distance {width: 80px}</style>');
     $("body").append('<style>#custom_panel{position:absolute;top:80px;left:10px;z-index:800}.custom_i{border-radius:40px;background-color:white;width:40px;height:40px;display:flex;align-items:center;justify-content:center;box-shadow:-1px 1px #999;margin-bottom:10px}#mon_filter{margin-left:10px}.pokemon_icon_img.iv_perfect{-webkit-filter:drop-shadow(3px 3px 3px red);filter:drop-shadow(3px 3px 5px red);transform:scale(1.3,1.3);transform-origin:0 0}.pokemon_icon_img.iv90{-webkit-filter:drop-shadow(3px 3px 3px blue);filter:drop-shadow(3px 3px 3px blue);transform:scale(1.3,1.3);transform-origin:0 0}.pokemon_icon_img.iv80{-webkit-filter:drop-shadow(3px 3px 3px purple);filter:drop-shadow(3px 3px 3px purple)}#map.grey .pokemon_icon_img.iv_perfect{-webkit-filter:drop-shadow(3px 3px 3px #ff1493);filter:drop-shadow(3px 3px 5px #ff1493)}#map.grey .pokemon_icon_img.iv90{-webkit-filter:drop-shadow(3px 3px 3px #00bfff);filter:drop-shadow(3px 3px 3px #00bfff)}#map.grey .pokemon_icon_img.iv80{-webkit-filter:drop-shadow(3px 3px 3px #F4D03F);filter:drop-shadow(3px 3px 3px #F4D03F)}</style> <div id="custom_panel"> <div id="filter_icon" class="custom_i"> <svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="#999" d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z" /></svg> </div> <div id="darken_icon" class="custom_i"> <svg style="width:24px;height:24px" viewBox="0 0 24 24"> <path fill="#999" d="M12,16L19.36,10.27L21,9L12,2L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,21.07L21,14.07L19.37,12.8L12,18.54Z" /></svg> </div> </div>');
     $("body").append('<style>input[type="search"]::-webkit-search-cancel-button{-webkit-appearance:none;height:14px;width:14px;display:block;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC);background-repeat:no-repeat;background-size:14px}</style>');
@@ -318,12 +319,19 @@ $("#mon_filter").on("input", function() {
     }
     if (e.toLowerCase() == "deoxys") {
         $(".filter_checkbox.deoxys").show();
+        $(".filter_checkbox.rockruff").hide();
+        isFilterForm = true;
+    }
+    else if (e.toLowerCase() == "rockruff") {
+        $(".filter_checkbox.rockruff").show();
+        $(".filter_checkbox.deoxys").hide();
         isFilterForm = true;
     }
     else {
         $(".filter_checkbox.deoxys").hide();
+        $(".filter_checkbox.rockruff").hide();
         isFilterForm = false;
-}
+    }
 });
 
 $("#checkbox_raid_non_boosted").on("change", function(){
@@ -347,7 +355,7 @@ $("#checkbox_raid_9").on("change", function(){
     }
 });
 
-
+// deoxys
 $('.filter_checkbox.deoxys input').change(function() {
     var modVal = parseInt($(this).val());
     if ($(this).is(':checked')) {
@@ -361,6 +369,23 @@ $('.filter_checkbox.deoxys input').change(function() {
             filterForms.splice(index, 1);
         }
     }
+});
+
+// rockruff
+$('.filter_checkbox.rockruff input').change(function() {
+    var modVal = parseInt($(this).val());
+    if ($(this).is(':checked')) {
+        // add form
+        filterForms.push(modVal);
+    }
+    else {
+        // remove form
+        var index = filterForms.indexOf(modVal);
+        if (index !== -1) {
+            filterForms.splice(index, 1);
+        }
+    }
+    console.log(filterForms);
 });
 
 // mrt
@@ -497,6 +522,9 @@ function refreshPokemons() {
         // attack = 34
         // defence = 35
         // speed = 36
+        //
+        // RockRuff - Normal = 2831
+        // // RockRuff - Dusk = 2737
         if (isFilterForm) {
             if (currentPokemon.id != 0 ) {
                 if (!filterForms.includes(parseInt(currentPokemon.form))) {
@@ -509,7 +537,7 @@ function refreshPokemons() {
             removeMarker(marker);
         }
         else {
-            addMarker(marker);
+                            addMarker(marker);
         }
     }
 

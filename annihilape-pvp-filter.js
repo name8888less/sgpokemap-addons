@@ -290,7 +290,7 @@ function refreshPokemons() {
                     }
                 }
 
-                index = mankeyLvlsUL.indexOf(statsString);
+                index = mankeyIvsUL.indexOf(statsString);
                 if (index!= -1) {
                     targetPokemonLevel = mankeyLvlsUL[index];
                     if (currentPokemon.level < targetPokemonLevel)

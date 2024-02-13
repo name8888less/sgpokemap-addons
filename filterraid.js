@@ -24,9 +24,10 @@ var isFilterForm = false;
 var timeLessFilter = Number.MAX_VALUE;
 var timeMoreFilter = 0;
 var isNonBoosted = false;
-var regex11am = /03\:00\:00 GMT$/g;
-var regex2pm = /06\:00\:00 GMT$/g;
+var regex12pm = /04\:00\:00 GMT$/g;
+var regex1pm = /05\:00\:00 GMT$/g;
 var regex5pm = /09\:00\:00 GMT$/g;
+var regex6pm = /10\:00\:00 GMT$/g;
 var isFilterMRT = false;
 
 var trainStations =
@@ -261,7 +262,7 @@ if (isFirstTime) {
         toggleOverlay();
     });
     // elite raid
-    $('#checkbox_raid_9').parent('.filter_checkbox').after('<div class="filter_checkbox" id="el_raid_filter"> <input id="checkbox_raid_11am" type="checkbox" checked><label for="checkbox_raid_11am"> 11am</label> <input id="checkbox_raid_2pm" type="checkbox" checked><label for="checkbox_raid_2pm"> 2pm</label> <input id="checkbox_raid_5pm" type="checkbox" checked><label for="checkbox_raid_5pm"> 5pm</label> </div>');
+    $('#checkbox_raid_9').parent('.filter_checkbox').after('<div class="filter_checkbox" id="el_raid_filter"> <input id="checkbox_raid_12pm" type="checkbox" checked><label for="checkbox_raid_12pm"> 12pm</label> <input id="checkbox_raid_1pm" type="checkbox" checked><label for="checkbox_raid_1pm"> 1pm</label> <input id="checkbox_raid_5pm" type="checkbox" checked><label for="checkbox_raid_5pm"> 5pm</label> <input id="checkbox_raid_6pm" type="checkbox" checked><label for="checkbox_raid_6pm"> 6pm</label> </div>');
     if ($("#checkbox_raid_9").prop("checked")) {
         $("#el_raid_filter").show();
     }
@@ -401,17 +402,20 @@ function refreshPokemons() {
     var toBeRemovedIndexes = [];
 
     //filter el raid initialise
-    var isElRaid = false, is11am = false, is2pm = false, is5pm = false;
+    var isElRaid = false, is12pm = false, is1pm = false, is5pm = false, is6pm = false;
     if ($("#checkbox_raid_9").prop("checked")) {
         isElRaid = true;
-        if ($("#checkbox_raid_11am").prop("checked")) {
-            is11am = true;
+        if ($("#checkbox_raid_12pm").prop("checked")) {
+            is12pm = true;
         }
-        if ($("#checkbox_raid_2pm").prop("checked")) {
-            is2pm = true;
+        if ($("#checkbox_raid_1pm").prop("checked")) {
+            is1pm = true;
         }
         if ($("#checkbox_raid_5pm").prop("checked")) {
             is5pm = true;
+        }
+        if ($("#checkbox_raid_6pm").prop("checked")) {
+            is6pm = true;
         }
     }
 
@@ -474,13 +478,16 @@ function refreshPokemons() {
         if (isElRaid && currentPokemon.level==9) {
             var exRaidStartDate = new Date(currentPokemon.raidStart * 1000);
             var exRaidUTCString = exRaidStartDate.toUTCString();
-            if (is11am && exRaidUTCString.match(regex11am)) {
+            if (is12pm && exRaidUTCString.match(regex12pm)) {
                 // don't do anything.
             }
-            else if (is2pm && exRaidUTCString.match(regex2pm)) {
+            else if (is1pm && exRaidUTCString.match(regex1pm)) {
                 // don't do anything.
             }
             else if (is5pm && exRaidUTCString.match(regex5pm)) {
+                // don't do anything.
+            }
+            else if (is6pm && exRaidUTCString.match(regex6pm)) {
                 // don't do anything.
             }
             else {

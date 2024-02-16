@@ -29,6 +29,7 @@ var regex1pm = /05\:00\:00 GMT$/g;
 var regex5pm = /09\:00\:00 GMT$/g;
 var regex6pm = /10\:00\:00 GMT$/g;
 var isFilterMRT = false;
+var isFilterMall = false;
 
 var trainStations =
     {"type":"FeatureCollection", "features":[
@@ -218,6 +219,196 @@ var trainStations =
         {"type":"Feature","geometry":{"type":"Point","coordinates":[103.86792285280015,1.2799968838540665,0]},"properties":{"STN_NAME":"Gardens By The Bay MRT Station","STN_NO":"TE22"}}
     ]};
 
+var malls =
+    {"type":"FeatureCollection", "features":[
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.84347073660999,1.27458821795427,0]},"properties":{"NAME":"100 AM"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.905098915055,1.30508681845447,0]},"properties":{"NAME":"112 KATONG"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.837684350436,1.3013851021471399,0]},"properties":{"NAME":"313@SOMERSET"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.764960537008,1.3120249182444,0]},"properties":{"NAME":"321 CLEMENTI"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.850955458676,1.33404171129957,0]},"properties":{"NAME":"600 @ TOA PAYOH"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.795289911954,1.4371305244487,0]},"properties":{"NAME":"888 PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.848467911464,1.36922321403002,0]},"properties":{"NAME":"AMK HUB"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.80179101959499,1.43988095490574,0]},"properties":{"NAME":"ADMIRALTY PLACE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.801375038176,1.2738426388845099,0]},"properties":{"NAME":"ALEXANDRA RETAIL CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.805607779399,1.28893477974498,0]},"properties":{"NAME":"ANCHORPOINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.864101647509,1.3097424203235601,0]},"properties":{"NAME":"APERIA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.843709493566,1.32612416875662,0]},"properties":{"NAME":"BALESTIER HILL SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.776539385678,1.3424126418864297,0]},"properties":{"NAME":"BEAUTY WORLD CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.776304121109,1.34178799847022,0]},"properties":{"NAME":"BEAUTY WORLD PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.92940545649,1.3246689739690902,0]},"properties":{"NAME":"BEDOK MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.932384005117,1.32480102552269,0]},"properties":{"NAME":"BEDOK POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.744879157153,1.33183269839976,0]},"properties":{"NAME":"BIG BOX"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.855655544739,1.29819500487879,0]},"properties":{"NAME":"BUGIS CUBE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85619157165199,1.3001178934309399,0]},"properties":{"NAME":"BUGIS JUNCTION"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.855204142122,1.30075921013125,0]},"properties":{"NAME":"BUGIS+"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.76431706853501,1.3799165066522399,0]},"properties":{"NAME":"BUKIT PANJANG PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.851293463737,1.2930633587734799,0]},"properties":{"NAME":"CAPITOL PIAZZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.836444792111,1.30149743442988,0]},"properties":{"NAME":"CATHAY CINELEISURE ORCHARD"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.78600997367799,1.43608867729913,0]},"properties":{"NAME":"CAUSEWAY POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.94378481243099,1.3523611314355002,0]},"properties":{"NAME":"CENTURY SQUARE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.852544637414,1.28412271103558,0]},"properties":{"NAME":"CHANGE ALLEY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.989276642386,1.3563414213584501,0]},"properties":{"NAME":"CHANGI AIRPORT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.96291761553101,1.3340363790270802,0]},"properties":{"NAME":"CHANGI CITY POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.844942912343,1.28526073702918,0]},"properties":{"NAME":"CHINATOWN POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85678076298599,1.3114774495223402,0]},"properties":{"NAME":"CITY SQUARE MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85466296886801,1.2923786067095901,0]},"properties":{"NAME":"CITYLINK MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.76459643930401,1.3155535427795,0]},"properties":{"NAME":"CLEMENTI MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.89498002538299,1.3920941559405202,0]},"properties":{"NAME":"COMPASS ONE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.81097183537399,1.29270252655149,0]},"properties":{"NAME":"DAWSON PLACE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.81014259576901,1.2808649386093,0]},"properties":{"NAME":"DEPOT HEIGHTS SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.929604640137,1.3260531991057098,0]},"properties":{"NAME":"DJITSUN MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.95477359288999,1.3777758420954298,0]},"properties":{"NAME":"DOWNTOWN EAST"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.857996795149,1.29921662121833,0]},"properties":{"NAME":"DUO"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.849383935394,1.3316765687873,0]},"properties":{"NAME":"ERA APAC CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.95307233895399,1.3425864408894,0]},"properties":{"NAME":"EASTPOINT MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.942364336974,1.3778287661646598,0]},"properties":{"NAME":"ELIAS MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.855665761542,1.28950956232932,0]},"properties":{"NAME":"ESPLANADE MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.67841055156299,1.3256176410229599,0]},"properties":{"NAME":"FAIRPRICE HUB"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.771029603101,1.3840058246629598,0]},"properties":{"NAME":"FAJAR SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.833939963454,1.30731112598869,0]},"properties":{"NAME":"FAR EAST PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.881167324822,1.3963155184234,0]},"properties":{"NAME":"FERNVALE POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.82867554961001,1.3061252256071698,0]},"properties":{"NAME":"FORUM THE SHOPPING MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.854495182879,1.30145299324793,0]},"properties":{"NAME":"FU LU SHOU COMPLEX"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.850146834511,1.29133889451297,0]},"properties":{"NAME":"FUNAN"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.850083606052,1.29130707593559,0]},"properties":{"NAME":"FUNAN DIGITALIFE MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.69829841817699,1.34874423181248,0]},"properties":{"NAME":"GEK POH SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.865284424819,1.30285776289789,0]},"properties":{"NAME":"GOLDEN MILE COMPLEX"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.831928020443,1.29315492907011,0]},"properties":{"NAME":"GREAT WORLD CITY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.766235457752,1.38541768689997,0]},"properties":{"NAME":"GREENRIDGE SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.869423629864,1.38760330190636,0]},"properties":{"NAME":"GREENWICH V"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.847077797948,1.33218812037255,0]},"properties":{"NAME":"HDB HUB"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.82021904559299,1.2637968288533101,0]},"properties":{"NAME":"HARBOURFRONT CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.885167372726,1.35954177325562,0]},"properties":{"NAME":"HEARTLAND MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.76423610633002,1.3635509577068001,0]},"properties":{"NAME":"HILLV2"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.762842789877,1.3784310082758702,0]},"properties":{"NAME":"HILLION MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.795350439947,1.31025541912227,0]},"properties":{"NAME":"HOLLAND ROAD SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.87945025083,1.3756672834841202,0]},"properties":{"NAME":"HOUGANG 1"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.893723857613,1.37243678271745,0]},"properties":{"NAME":"HOUGANG MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.74687713286801,1.33491758755438,0]},"properties":{"NAME":"IMM"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.831888294023,1.3040425340698,0]},"properties":{"NAME":"ION ORCHARD"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.84589784359301,1.27601222585223,0]},"properties":{"NAME":"INTERNATIONAL PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.740191321438,1.33323785085839,0]},"properties":{"NAME":"JCUBE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.743433746954,1.33305451930724,0]},"properties":{"NAME":"JEM"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.989670344538,1.36033174518933,0]},"properties":{"NAME":"JEWEL CHANGI AIRPORT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.760041583169,1.38060512473526,0]},"properties":{"NAME":"JUNCTION 10"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.848477625201,1.3502394308637,0]},"properties":{"NAME":"JUNCTION 8"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.841600823354,1.43303198215121,0]},"properties":{"NAME":"JUNCTION NINE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.706685012926,1.3394520043632099,0]},"properties":{"NAME":"JURONG POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.894480526031,1.31469213499496,0]},"properties":{"NAME":"KINEX"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.87275070166099,1.30384327182322,0]},"properties":{"NAME":"KALLANG WAVE MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.901040040135,1.3038204018374,0]},"properties":{"NAME":"KATONG SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.87644917595199,1.30233745290723,0]},"properties":{"NAME":"LEISURE PARK KALLANG"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.84466893511299,1.29149019892639,0]},"properties":{"NAME":"LIANG COURT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83072791506201,1.30510759038419,0]},"properties":{"NAME":"LIAT TOWERS"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.743190998187,1.39224240572061,0]},"properties":{"NAME":"LIMBANG SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.74523886823799,1.3850699232561898,0]},"properties":{"NAME":"LOT ONE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.96459849952299,1.3664536401035,0]},"properties":{"NAME":"LOYANG POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.834005158524,1.30446378974741,0]},"properties":{"NAME":"LUCKY PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83658396580601,1.3020047173196498,0]},"properties":{"NAME":"MANDARIN GALLERY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85445700019599,1.27912488289485,0]},"properties":{"NAME":"MARINA BAY FINANCIAL CENTRE TOWER 3"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85347014858,1.2804679433167399,0]},"properties":{"NAME":"MARINA BAY LINK MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85945063691901,1.2839941013920602,0]},"properties":{"NAME":"MARINA BAY SANDS"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85340187261801,1.2770416897788301,0]},"properties":{"NAME":"MARINA ONE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85762353235901,1.29103980256765,0]},"properties":{"NAME":"MARINA SQUARE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85990023349899,1.2920460530205,0]},"properties":{"NAME":"MILLENIA WALK"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.871861615443,1.3506755212032,0]},"properties":{"NAME":"NEX"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83467612472299,1.30242417189412,0]},"properties":{"NAME":"NGEE ANN CITY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83614202883601,1.42799995995186,0]},"properties":{"NAME":"NORTHPOINT CITY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.90213684712,1.41684981094702,0]},"properties":{"NAME":"NORTHSHORE PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.844177088816,1.31934328126484,0]},"properties":{"NAME":"NOVENA SQUARE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.913270565628,1.40263460056255,0]},"properties":{"NAME":"OASIS TERRACES"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85098234671801,1.2843399432025,0]},"properties":{"NAME":"ONE RAFFLES PLACE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.839692368177,1.3007235035670601,0]},"properties":{"NAME":"ORCHARD CENTRAL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.839442780042,1.30044325279546,0]},"properties":{"NAME":"ORCHARD GATEWAY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.838660627347,1.30178378195548,0]},"properties":{"NAME":"ORCHARD MIDPOINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.84115177072701,1.30126533034761,0]},"properties":{"NAME":"ORCHARD PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83788829913,1.3014849976274598,0]},"properties":{"NAME":"ORCHARD SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.82921774932501,1.30684615299345,0]},"properties":{"NAME":"ORCHARD TOWERS"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.940848647333,1.35310120216274,0]},"properties":{"NAME":"OUR TAMPINES HUB"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.892832205276,1.3174823105835802,0]},"properties":{"NAME":"PLQ MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.829588045188,1.30665484543192,0]},"properties":{"NAME":"PALAIS RENAISSANCE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83524030845501,1.3037232173927,0]},"properties":{"NAME":"PARAGON SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.90528181444999,1.30108003311458,0]},"properties":{"NAME":"PARKWAY PARADE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.93620756732099,1.37976754317117,0]},"properties":{"NAME":"PASIR RIS WEST PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.892550598424,1.31867575623017,0]},"properties":{"NAME":"PAYA LEBAR SQUARE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.850804507292,1.29232248414938,0]},"properties":{"NAME":"PENINSULA PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.843929820315,1.28575774235159,0]},"properties":{"NAME":"PEOPLE'S PARK CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.84258481078301,1.2841286263641698,0]},"properties":{"NAME":"PEOPLE'S PARK COMPLEX"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.69702008158701,1.34159108725754,0]},"properties":{"NAME":"PIONEER MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.845067272666,1.3008207176923898,0]},"properties":{"NAME":"PLAZA SINGAPURA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.84928559930799,1.30007556914647,0]},"properties":{"NAME":"POMO"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.91297643758301,1.3941840943827302,0]},"properties":{"NAME":"PUNGGOL PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.80339114045499,1.28761792558743,0]},"properties":{"NAME":"QUEENSWAY SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.853119904656,1.2938935786331398,0]},"properties":{"NAME":"RAFFLES CITY SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.904473070943,1.3922173266777,0]},"properties":{"NAME":"RIVERVALE MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.901849634797,1.38537151608701,0]},"properties":{"NAME":"RIVERVALE PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.78852394760901,1.3053179268958202,0]},"properties":{"NAME":"ROCHESTER MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83308338185999,1.3057629243588502,0]},"properties":{"NAME":"SCOTTS SQUARE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.87606765513,1.3913930612689498,0]},"properties":{"NAME":"SELETAR MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.824832416105,1.4418532534675101,0]},"properties":{"NAME":"SEMBAWANG SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.855146819671,1.31078075190146,0]},"properties":{"NAME":"SERANGOON PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.852875622062,1.3030229851526298,0]},"properties":{"NAME":"SIM LIM SQUARE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85463996092899,1.3038113301821002,0]},"properties":{"NAME":"SIM LIM TOWER"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.84413837480899,1.2981321476693501,0]},"properties":{"NAME":"SINGAPORE SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.856000621324,1.2947409482015502,0]},"properties":{"NAME":"SOUTH BEACH"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.844331494859,1.32061258625869,0]},"properties":{"NAME":"SQUARE 2"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.850821336975,1.29409146652973,0]},"properties":{"NAME":"STAMFORD HOUSE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.81946210281201,1.44822653818276,0]},"properties":{"NAME":"SUN PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.73901548629298,1.37789727654677,0]},"properties":{"NAME":"SUNSHINE PLACE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.858585026016,1.2954667558967499,0]},"properties":{"NAME":"SUNTEC CITY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.72046202427799,1.3348448747126,0]},"properties":{"NAME":"TAMAN JURONG SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.945141172369,1.35432321225806,0]},"properties":{"NAME":"TAMPINES 1"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.94469623008301,1.3525802519703898,0]},"properties":{"NAME":"TAMPINES MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83323668385201,1.30483283007133,0]},"properties":{"NAME":"TANG PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.823883490852,1.30485342129478,0]},"properties":{"NAME":"TANGLIN MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.832971130126,1.30495005564844,0]},"properties":{"NAME":"TANGS"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.846180785876,1.2766095282693,0]},"properties":{"NAME":"TANJONG PAGAR CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85060998548599,1.3061777304808002,0]},"properties":{"NAME":"TEKKA CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.847832003713,1.29920226381605,0]},"properties":{"NAME":"THE CATHAY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.839758893141,1.30197804548976,0]},"properties":{"NAME":"THE CENTREPOINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.764570204717,1.31549675427513,0]},"properties":{"NAME":"THE CLEMENTI MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.86246592865999,1.30085584996949,0]},"properties":{"NAME":"THE CONCOURSE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.843203365359,1.28473141234248,0]},"properties":{"NAME":"THE MAJESTIC"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83584422762699,1.3039493635530102,0]},"properties":{"NAME":"THE PARAGON"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.87606765513,1.3913930612689498,0]},"properties":{"NAME":"THE SELETAR MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.85898223619101,1.28423491318867,0]},"properties":{"NAME":"THE SHOPPES AT MARINA BAY SANDS"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.856276242094,1.29498804392057,0]},"properties":{"NAME":"THE SOUTH BEACH"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.78842027411501,1.30697044038324,0]},"properties":{"NAME":"THE STAR VISTA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.871670008464,1.33873066415568,0]},"properties":{"NAME":"THE WOODLEIGH MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83032810292801,1.35432524209243,0]},"properties":{"NAME":"THOMSON PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.827158267789,1.28647119992725,0]},"properties":{"NAME":"TIONG BAHRU PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.878828409594,1.3534808832612601,0]},"properties":{"NAME":"UPPER SERANGOON SHOPPING CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.84403356919901,1.31978949204526,0]},"properties":{"NAME":"VELOCITY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.793852610387,1.43075765633744,0]},"properties":{"NAME":"VISTA POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.821808620881,1.26439468067259,0]},"properties":{"NAME":"VIVOCITY"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.902238067127,1.40642616289953,0]},"properties":{"NAME":"WATERWAY POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.76609288210699,1.30374258287197,0]},"properties":{"NAME":"WEST COAST PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.74902197661801,1.3501891656050602,0]},"properties":{"NAME":"WEST MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.74287010551201,1.33428313049539,0]},"properties":{"NAME":"WESTGATE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83071423110901,1.30453635973283,0]},"properties":{"NAME":"WHEELOCK PLACE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.949749226457,1.37239898072244,0]},"properties":{"NAME":"WHITE SANDS"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.83318959278499,1.3036989067941298,0]},"properties":{"NAME":"WISMA ATRIA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.89674796590799,1.31646238412035,0]},"properties":{"NAME":"WISMA GEYLANG SERAI"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.841236456898,1.4179992628404001,0]},"properties":{"NAME":"WISTERIA MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.79816228553301,1.4456478700315902,0]},"properties":{"NAME":"WOODLANDS MART"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.79082582427401,1.4428457006918303,0]},"properties":{"NAME":"WOODLANDS NORTH PLAZA"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.746662121143,1.39705741516143,0]},"properties":{"NAME":"YEW TEE POINT"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.747084778932,1.3980473615301698,0]},"properties":{"NAME":"YEW TEE SQUARE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.843483900908,1.28480771842172,0]},"properties":{"NAME":"YUE HWA BUILDING"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.846554377679,1.3269450445695201,0]},"properties":{"NAME":"ZHONGSHAN MALL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.8623317,1.3023159,0]},"properties":{"NAME":"CITY GATE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.8465580,1.2888386,0]},"properties":{"NAME":"THE CENTRAL"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.8364202,1.4299181,0]},"properties":{"NAME":"GOLDEN VILLAGE - YISHUN TEN"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.7961072,1.3105635,0]},"properties":{"NAME":"RAFFLES HOLLAND V"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.7435037,1.3330614,0]},"properties":{"NAME":"JEM"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.8552908,1.3101122,0]},"properties":{"NAME":"MUSTAFA CENTRE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.8315073,1.3058098,0]},"properties":{"NAME":"SHAW HOUSE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.8436114,1.3171945,0]},"properties":{"NAME":"UNITED SQUARE"}},
+        {"type":"Feature","geometry":{"type":"Point","coordinates":[103.8651595,1.3651149,0]},"properties":{"NAME":"MYVILLAGE @ SERANGOON"}},
+    ]};
+
+
+
 function getDistanceFromLatLonInKm(l, t, a, n) {
     var d = deg2rad(a - l);
     var c = deg2rad(n - t);
@@ -234,10 +425,11 @@ function deg2rad(l) {
 if (isFirstTime) {
     $('.filter_checkbox').first().before('<input id="mon_filter" class="inserted_filter" type="search" placeholder="Filter"/><div class="inserted_filter" id="time_filter">><input id="more_filter" type="search" placeholder="End (Min)"/> <<input id="less_filter" type="search" placeholder="Hatch (Min)"/></div>');
     $('.filter_checkbox').first().after('<div class="filter_checkbox"> <input id="checkbox_raid_non_boosted" type="checkbox" value="boosted"><label for="checkbox_raid_non_boosted"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDUxMiA1MTIiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggZD0iTTAsNTEyaDEzOS42VjM3Mi40SDBWNTEyeiBNNDYuNSw0MTguOWg0Ni41djQ2LjVINDYuNVY0MTguOXogTTAsMTM5LjZoMTM5LjZWMEgwVjEzOS42eiBNMCwzMjUuOGgxMzkuNlYxODYuMkgwVjMyNS44eg0KCSBNNDYuNSwyMzIuN2g0Ni41djQ2LjVINDYuNVYyMzIuN3ogTTIwOS41LDBjMTYyLjksOTMuMSwyNDQuNCwyMjEuMSw1OC4yLDMzNy41TDE4Ni4yLDI1NnYyNTZoMjU2bC04MS41LTgxLjUNCglDNjA1LjEsMTg2LjIsMzcyLjQsMCwyMDkuNSwweiIvPg0KPC9zdmc+DQo=" style="width:20px; height: 20px"> Non Weather boosted only</label> </div>');
-    $('.filter_checkbox').first().after('<div class="filter_checkbox"> <input id="checkbox_mrt_only" type="checkbox" value="boosted"><label for="checkbox_mrt_only"><img src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBTdmcgVmVjdG9yIEljb25zIDogaHR0cDovL3d3dy5vbmxpbmV3ZWJmb250cy5jb20vaWNvbiAtLT4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwMCAxMDAwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxMDAwIDEwMDAiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8bWV0YWRhdGE+IFN2ZyBWZWN0b3IgSWNvbnMgOiBodHRwOi8vd3d3Lm9ubGluZXdlYmZvbnRzLmNvbS9pY29uIDwvbWV0YWRhdGE+CjxnPjxwYXRoIGQ9Ik03MTUuOSw1MS41aC01OC4xdi04LjNjMC0xNi42LTE2LjYtMzMuMi0zMy4yLTMzLjJIMzY3LjFjLTE2LjYsMC0zMy4yLDE2LjYtMzMuMiwzMy4ydjguM2gtNDkuOGMtOTEuNCwwLTE2Ni4xLDc0LjctMTY2LjEsMTY2LjF2MzczLjdjMCw5MS40LDc0LjcsMTY2LjEsMTY2LjEsMTY2LjFoNDMxLjljOTEuNCwwLDE2Ni4xLTc0LjcsMTY2LjEtMTY2LjFWMjE3LjZDODgyLDEyNi4zLDgwNy4zLDUxLjUsNzE1LjksNTEuNXogTTMxNy4zLDY3NC40Yy00MS41LDAtODMuMS0zMy4yLTgzLjEtNzQuN2MwLTQxLjUsMzMuMi03NC43LDgzLjEtNzQuN2M0OS44LDAsODMuMSwzMy4yLDgzLjEsNzQuN0MzOTIsNjQxLjIsMzU4LjgsNjc0LjQsMzE3LjMsNjc0LjR6IE02OTEsNjc0LjRjLTQxLjUsMC04My4xLTMzLjItODMuMS03NC43YzAtNDEuNSwzMy4yLTc0LjcsODMuMS03NC43YzQ5LjgsMCw4My4xLDMzLjIsODMuMSw3NC43Qzc3NC4xLDY0MS4yLDczMi41LDY3NC40LDY5MSw2NzQuNHogTTc5MC43LDQwMC4zdjguM0gyMDkuM1YyMjUuOWMwLTU4LjEsNDkuOC0xMDgsMTE2LjMtMTA4aDM0MC41YzY2LjQsMCwxMTYuMyw0OS44LDExNi4zLDEwOHYxNzQuNEg3OTAuN3oiLz48cGF0aCBkPSJNMjAxLDk5MGMtOC4zLDAtOC4zLDAtMTYuNi04LjNjLTguMy04LjMtOC4zLTI0LjksMC0zMy4ybDE0OS41LTE0MS4yYzguMy04LjMsMjQuOS04LjMsMzMuMiwwYzguMyw4LjMsOC4zLDI0LjksMCwzMy4yTDIxNy42LDk4MS43QzIwOS4zLDk5MCwyMDkuMyw5OTAsMjAxLDk5MHoiLz48cGF0aCBkPSJNODA3LjMsOTkwYy04LjMsMC04LjMsMC0xNi42LTguM0w2NDkuNSw4NDAuNWMtOC4zLTguMy04LjMtMjQuOSwwLTMzLjJjOC4zLTguMywyNC45LTguMywzMy4yLDBsMTQxLjIsMTQxLjJjOC4zLDguMyw4LjMsMjQuOSwwLDMzLjJDODE1LjYsOTkwLDgwNy4zLDk5MCw4MDcuMyw5OTB6Ii8+PC9nPgo8L3N2Zz4=" style="width:20px; height: 20px"> MRT only</label> <input id="mrt_distance" type="search" placeholder="MRT Radius" value="100"/>m</div>');
+    $('.filter_checkbox').first().after('<div class="filter_checkbox"> <input id="checkbox_mall_only" type="checkbox" value="boosted"><label for="checkbox_mall_only"><img src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPg0KPHN2ZyB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMiAxQzEuNDQ3NzIgMSAxIDEuNDQ3NzIgMSAyQzEgMi41NTIyOCAxLjQ0NzcyIDMgMiAzSDMuMjE5MjJMNi43ODM0NSAxNy4yNTY5QzUuNzMyNzYgMTcuNzIzNiA1IDE4Ljc3NjIgNSAyMEM1IDIxLjY1NjkgNi4zNDMxNSAyMyA4IDIzQzkuNjU2ODUgMjMgMTEgMjEuNjU2OSAxMSAyMEMxMSAxOS42NDk0IDEwLjkzOTggMTkuMzEyOCAxMC44MjkzIDE5SDE1LjE3MDdDMTUuMDYwMiAxOS4zMTI4IDE1IDE5LjY0OTQgMTUgMjBDMTUgMjEuNjU2OSAxNi4zNDMxIDIzIDE4IDIzQzE5LjY1NjkgMjMgMjEgMjEuNjU2OSAyMSAyMEMyMSAxOC4zNDMxIDE5LjY1NjkgMTcgMTggMTdIOC43ODA3OEw4LjI4MDc4IDE1SDE4QzIwLjA2NDIgMTUgMjEuMzAxOSAxMy42OTU5IDIxLjk4ODcgMTIuMjU1OUMyMi42NTk5IDEwLjg0ODcgMjIuODkzNSA5LjE2NjkyIDIyLjk3NSA3Ljk0MzY4QzIzLjA4ODQgNi4yNDAxNCAyMS42ODAzIDUgMjAuMTIxMSA1SDUuNzgwNzhMNS4xNTk1MSAyLjUxNDkzQzQuOTM2OTIgMS42MjQ1OSA0LjEzNjk2IDEgMy4yMTkyMiAxSDJaTTE4IDEzSDcuNzgwNzhMNi4yODA3OCA3SDIwLjEyMTFDMjAuNjc0MiA3IDIxLjAwNjMgNy40MDY3NSAyMC45Nzk0IDcuODEwNzhDMjAuOTAzNCA4Ljk1MjIgMjAuNjkwNiAxMC4zMzE4IDIwLjE4MzYgMTEuMzk0OUMxOS42OTIyIDEyLjQyNTEgMTkuMDIwMSAxMyAxOCAxM1pNMTggMjAuOTkzOEMxNy40NTExIDIwLjk5MzggMTcuMDA2MiAyMC41NDg5IDE3LjAwNjIgMjBDMTcuMDA2MiAxOS40NTExIDE3LjQ1MTEgMTkuMDA2MiAxOCAxOS4wMDYyQzE4LjU0ODkgMTkuMDA2MiAxOC45OTM4IDE5LjQ1MTEgMTguOTkzOCAyMEMxOC45OTM4IDIwLjU0ODkgMTguNTQ4OSAyMC45OTM4IDE4IDIwLjk5MzhaTTcuMDA2MTcgMjBDNy4wMDYxNyAyMC41NDg5IDcuNDUxMTIgMjAuOTkzOCA4IDIwLjk5MzhDOC41NDg4OCAyMC45OTM4IDguOTkzODMgMjAuNTQ4OSA4Ljk5MzgzIDIwQzguOTkzODMgMTkuNDUxMSA4LjU0ODg4IDE5LjAwNjIgOCAxOS4wMDYyQzcuNDUxMTIgMTkuMDA2MiA3LjAwNjE3IDE5LjQ1MTEgNy4wMDYxNyAyMFoiIGZpbGw9IiMwRjBGMEYiLz4NCjwvc3ZnPg==" style="width:20px; height: 20px"> Malls </label> <input id="mall_distance" type="search" placeholder="Mall Radius" value="100"/>m</div>');
+    $('.filter_checkbox').first().after('<div class="filter_checkbox"> <input id="checkbox_mrt_only" type="checkbox" value="boosted"><label for="checkbox_mrt_only"><img src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBTdmcgVmVjdG9yIEljb25zIDogaHR0cDovL3d3dy5vbmxpbmV3ZWJmb250cy5jb20vaWNvbiAtLT4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwMCAxMDAwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxMDAwIDEwMDAiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8bWV0YWRhdGE+IFN2ZyBWZWN0b3IgSWNvbnMgOiBodHRwOi8vd3d3Lm9ubGluZXdlYmZvbnRzLmNvbS9pY29uIDwvbWV0YWRhdGE+CjxnPjxwYXRoIGQ9Ik03MTUuOSw1MS41aC01OC4xdi04LjNjMC0xNi42LTE2LjYtMzMuMi0zMy4yLTMzLjJIMzY3LjFjLTE2LjYsMC0zMy4yLDE2LjYtMzMuMiwzMy4ydjguM2gtNDkuOGMtOTEuNCwwLTE2Ni4xLDc0LjctMTY2LjEsMTY2LjF2MzczLjdjMCw5MS40LDc0LjcsMTY2LjEsMTY2LjEsMTY2LjFoNDMxLjljOTEuNCwwLDE2Ni4xLTc0LjcsMTY2LjEtMTY2LjFWMjE3LjZDODgyLDEyNi4zLDgwNy4zLDUxLjUsNzE1LjksNTEuNXogTTMxNy4zLDY3NC40Yy00MS41LDAtODMuMS0zMy4yLTgzLjEtNzQuN2MwLTQxLjUsMzMuMi03NC43LDgzLjEtNzQuN2M0OS44LDAsODMuMSwzMy4yLDgzLjEsNzQuN0MzOTIsNjQxLjIsMzU4LjgsNjc0LjQsMzE3LjMsNjc0LjR6IE02OTEsNjc0LjRjLTQxLjUsMC04My4xLTMzLjItODMuMS03NC43YzAtNDEuNSwzMy4yLTc0LjcsODMuMS03NC43YzQ5LjgsMCw4My4xLDMzLjIsODMuMSw3NC43Qzc3NC4xLDY0MS4yLDczMi41LDY3NC40LDY5MSw2NzQuNHogTTc5MC43LDQwMC4zdjguM0gyMDkuM1YyMjUuOWMwLTU4LjEsNDkuOC0xMDgsMTE2LjMtMTA4aDM0MC41YzY2LjQsMCwxMTYuMyw0OS44LDExNi4zLDEwOHYxNzQuNEg3OTAuN3oiLz48cGF0aCBkPSJNMjAxLDk5MGMtOC4zLDAtOC4zLDAtMTYuNi04LjNjLTguMy04LjMtOC4zLTI0LjksMC0zMy4ybDE0OS41LTE0MS4yYzguMy04LjMsMjQuOS04LjMsMzMuMiwwYzguMyw4LjMsOC4zLDI0LjksMCwzMy4yTDIxNy42LDk4MS43QzIwOS4zLDk5MCwyMDkuMyw5OTAsMjAxLDk5MHoiLz48cGF0aCBkPSJNODA3LjMsOTkwYy04LjMsMC04LjMsMC0xNi42LTguM0w2NDkuNSw4NDAuNWMtOC4zLTguMy04LjMtMjQuOSwwLTMzLjJjOC4zLTguMywyNC45LTguMywzMy4yLDBsMTQxLjIsMTQxLjJjOC4zLDguMyw4LjMsMjQuOSwwLDMzLjJDODE1LjYsOTkwLDgwNy4zLDk5MCw4MDcuMyw5OTB6Ii8+PC9nPgo8L3N2Zz4=" style="width:20px; height: 20px"> MRT </label> <input id="mrt_distance" type="search" placeholder="MRT Radius" value="100"/>m</div>');
     $('.filter_checkbox').first().before('<div class="filter_checkbox deoxys"> <input id="form_normal"  name="form" type="checkbox" value="33" ><label for="form_normal">Normal</label>  <input id="form_attack"  name="form" type="checkbox" value="34" ><label for="form_attack">Attack</label> <input id="form_defence"  name="form" type="checkbox" value="35" ><label for="form_defence">Defence</label> <input id="form_speed"  name="form" type="checkbox" value="36" ><label for="form_speed">Speed</label> </div> <style>.filter_checkbox.deoxys{display:none}</style>');
     $('.filter_checkbox').first().before('<div class="filter_checkbox rockruff"> <input id="form_normal"  name="form" type="checkbox" value="2831" ><label for="form_normal">Normal</label>  <input id="form_dusk"  name="form" type="checkbox" value="2737" ><label for="form_dusk">Dusk</label> </div> <style>.filter_checkbox.rockruff{display:none}</style>');
-    $("body").append('<style>.inserted_filter{margin:0 0 12px 4px; display: block;} #time_filter input {width: 80px} #mrt_distance {width: 80px}</style>');
+    $("body").append('<style>.inserted_filter{margin:0 0 12px 4px; display: block;} #time_filter input {width: 80px} #mrt_distance, #mall_distance {width: 80px}</style>');
     $("body").append('<style>#custom_panel{position:absolute;top:80px;left:10px;z-index:800}.custom_i{border-radius:40px;background-color:white;width:40px;height:40px;display:flex;align-items:center;justify-content:center;box-shadow:-1px 1px #999;margin-bottom:10px}#mon_filter{margin-left:10px}.pokemon_icon_img.iv_perfect{-webkit-filter:drop-shadow(3px 3px 3px red);filter:drop-shadow(3px 3px 5px red);transform:scale(1.3,1.3);transform-origin:0 0}.pokemon_icon_img.iv90{-webkit-filter:drop-shadow(3px 3px 3px blue);filter:drop-shadow(3px 3px 3px blue);transform:scale(1.3,1.3);transform-origin:0 0}.pokemon_icon_img.iv80{-webkit-filter:drop-shadow(3px 3px 3px purple);filter:drop-shadow(3px 3px 3px purple)}#map.grey .pokemon_icon_img.iv_perfect{-webkit-filter:drop-shadow(3px 3px 3px #ff1493);filter:drop-shadow(3px 3px 5px #ff1493)}#map.grey .pokemon_icon_img.iv90{-webkit-filter:drop-shadow(3px 3px 3px #00bfff);filter:drop-shadow(3px 3px 3px #00bfff)}#map.grey .pokemon_icon_img.iv80{-webkit-filter:drop-shadow(3px 3px 3px #F4D03F);filter:drop-shadow(3px 3px 3px #F4D03F)}</style> <div id="custom_panel"> <div id="filter_icon" class="custom_i"> <svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="#999" d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z" /></svg> </div> <div id="darken_icon" class="custom_i"> <svg style="width:24px;height:24px" viewBox="0 0 24 24"> <path fill="#999" d="M12,16L19.36,10.27L21,9L12,2L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,21.07L21,14.07L19.37,12.8L12,18.54Z" /></svg> </div> </div>');
     $("body").append('<style>input[type="search"]::-webkit-search-cancel-button{-webkit-appearance:none;height:14px;width:14px;display:block;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAn0lEQVR42u3UMQrDMBBEUZ9WfQqDmm22EaTyjRMHAlM5K+Y7lb0wnUZPIKHlnutOa+25Z4D++MRBX98MD1V/trSppLKHqj9TTBWKcoUqffbUcbBBEhTjBOV4ja4l4OIAZThEOV6jHO8ARXD+gPPvKMABinGOrnu6gTNUawrcQKNCAQ7QeTxORzle3+sDfjJpPCqhJh7GixZq4rHcc9l5A9qZ+WeBhgEuAAAAAElFTkSuQmCC);background-repeat:no-repeat;background-size:14px}</style>');
     $("#close_donation_button").click(), $(".toast-close-button").click(), $("#overlay").hide(),
@@ -393,6 +585,10 @@ $('.filter_checkbox.rockruff input').change(function() {
 $("#checkbox_mrt_only").on("change", function(){
     isFilterMRT  = $(this).prop("checked") ? true : false;
 });
+// mall
+$("#checkbox_mall_only").on("change", function(){
+    isFilterMall  = $(this).prop("checked") ? true : false;
+});
 
 function refreshPokemons() {
     if (!shouldUpdate) {
@@ -501,9 +697,8 @@ function refreshPokemons() {
             if ($.isNumeric(radius)) {
                 radiusKm = radius/1000;
             }
-
+            var isFoundNearMrt = false;
             for (var e = 0; e < trainStations.features.length; e++) {
-                var isFoundNearMrt = false;
                 var stn = trainStations.features[e];
                 var dist = getDistanceFromLatLonInKm(currentPokemon.center.lat, currentPokemon.center.lng, stn.geometry.coordinates[1], stn.geometry.coordinates[0]);
                 if (dist < radiusKm) {
@@ -513,6 +708,30 @@ function refreshPokemons() {
                 }
             }
             if (!isFoundNearMrt)
+            {
+                shouldRemove = true;
+            }
+
+        }
+        if (isFilterMall) {
+            var radius = $("#mall_distance").val();
+            var radiusKm = 0.1;
+            if ($.isNumeric(radius)) {
+                radiusKm = radius/1000;
+            }
+            
+            var isFoundNearMall = false;
+
+            for (var e = 0; e < malls.features.length; e++) {
+                var stn = malls.features[e];
+                var dist = getDistanceFromLatLonInKm(currentPokemon.center.lat, currentPokemon.center.lng, stn.geometry.coordinates[1], stn.geometry.coordinates[0]);
+                if (dist < radiusKm) {
+                    // don't do anything
+                    isFoundNearMall = true;
+                    break;
+                }
+            }
+            if (!isFoundNearMall)
             {
                 shouldRemove = true;
             }

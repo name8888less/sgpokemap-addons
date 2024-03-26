@@ -94,7 +94,7 @@ function refreshPokemons() {
             var isDesiredPokemon = false;
             var statsString = currentPokemon.attack+ "/"+ currentPokemon.defence +"/"+currentPokemon.stamina;
 
-            if (currentPokemon.id==56) {
+            if (currentPokemon.id==333) {
 
                 var index = swabluIvsGL.indexOf(statsString);
                 var pvpString = "";

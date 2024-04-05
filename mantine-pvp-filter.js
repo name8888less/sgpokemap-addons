@@ -192,7 +192,7 @@ function refreshPokemons() {
                             pvpString += ", "
                         }
                         isDesiredPokemon = true;
-                        pvpString += "LC Mandi#" + (index+1);
+                        pvpString += "LC #" + (index+1);
                     }
                 }
 

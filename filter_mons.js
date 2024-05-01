@@ -118,24 +118,28 @@ function updateCheckedPokemons(){
 }
 
 function processLocalStoragePvPItems(){
-	var pvpSelectors = JSON.parse(localStorage.getItem("pvpIvSelectors"));
-	var checkedPokemonIds = checkedPokemons.map(function(element) {
-        return element["id"];
-    });
+	var localStoredPvpSelectors = localStorage.getItem("pvpIvSelectors");
+	if (localStoredPvpSelectors) {
+		var pvpSelectors = JSON.parse(localStorage.getItem("pvpIvSelectors"));
+		var checkedPokemonIds = checkedPokemons.map(function(element) {
+	        return element["id"];
+	    });
 
-    let filteredArray = pvpSelectors.filter(pvp_leage_selector_params => {
-		var [monId, monName, league] = pvp_leage_selector_params.split("__");
-		if (checkedPokemonIds.indexOf(monId) != -1) {
-			$(`#${pvp_leage_selector_params}`).prop("checked", true);
-			return true;
-		}
-		else {
-			return false;
-		}
-    }); 
-    localStorage.setItem("pvpIvSelectors", JSON.stringify(filteredArray));
-
-
+	    let filteredArray = pvpSelectors.filter(function(pvp_leage_selector_params ) {
+			var [monId, monName, league] = pvp_leage_selector_params.split("__");
+			if (checkedPokemonIds.indexOf(monId) != -1) {
+				$(`#${pvp_leage_selector_params}`).prop("checked", true);
+				return true;
+			}
+			else {
+				return false;
+			}
+	    }); 
+	    localStorage.setItem("pvpIvSelectors", JSON.stringify(filteredArray));
+	}
+	else {
+		localStorage.setItem("pvpIvSelectors", JSON.stringify([]));
+	}
 }
 
 function getPvPIvs(monId, monName, league) {

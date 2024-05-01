@@ -1,7 +1,4 @@
 // load scripts
-$.getScript("https://pvpivs.com/includes/pokeListObj.js", function(data, textStatus, jqxhr) {});
-$.getScript("https://pvpivs.com/includes/calculate.js", function(data, textStatus, jqxhr) {});
-
 var overlayGrey;
 
 L.GridLayer.OverlayGrey = L.GridLayer.extend({
@@ -238,36 +235,6 @@ function updatePvpIvList() {
     localStorage.setItem("pvpIvSelectors", JSON.stringify(pvpIvStorage));
 }
 
-
-setTimeout(function(){
-
-	// update first time
-	updateCheckedPokemons();
-
-	$(document).on("change", ".filter_checkbox input[type='checkbox']", function() {
-	    updateCheckedPokemons();
-	});
-
-	
-	updatePvpIvList();
-	$(document).on("change", "input[name='pvp_leage_selector']", function() {
-	    updatePvpIvList();
-	});
-
-	$("#deselect_all_btn").click(function(){
-		updateCheckedPokemons();
-		updatePvpIvList();
-	});
-
-	$("#pvp_top_number").on("change", function(){
-	    ivsArrMax  = $(this).val();
-	    updatePvpIvList();
-	});
-
-
-}, 3000);
-
-
 function refreshPokemons() {
     if (!shouldUpdate) {
         return; //don't update when map is moving
@@ -480,3 +447,64 @@ function infoWindowString(pokemon) {
     return '<b>' + getPokemonName(pokemon) + disguiseString + genderString + formString + "</b><br />" + (pokemon.pvptype ?   pokemon.pvptype + "</b><br /><br />" : "") + weatherString + ivString + movesetString + cpString + timeToString(pokemon.remainingTime()) + '<br /><br /><a target="_blank" href="https://maps.google.com/maps?q=' + pokemon.center.lat + ',' + pokemon.center.lng + '">Maps</a><br /><br /><a href="faq.html#approximately_timer" target="_blank">(Approximately Despawn Time)</a>';
 }
 
+
+// Function to handle script loading success
+function handleScriptLoad(url, successCallback) {
+  $.getScript(url, function(data, textStatus, jqxhr) {
+    if (textStatus === 'success') {
+      console.log(`Successfully loaded script: ${url}`);
+      loadedScriptsCount++; // Increment counter on success
+      if (loadedScriptsCount === scriptUrls.length) {
+        successCallback(); // Call onAllScriptsLoaded after all scripts load
+      }
+    } else {
+      const error = new Error(`Failed to load script: ${url}`);
+      console.error(error);
+      // Handle the error appropriately
+    }
+  });
+}
+
+// Script URLs
+const scriptUrls = [
+  "https://pvpivs.com/includes/pokeListObj.js",
+  "https://pvpivs.com/includes/calculate.js"
+];
+
+// Counter for loaded scripts
+let loadedScriptsCount = 0;
+
+// Load scripts sequentially and call onAllScriptsLoaded after all are loaded
+scriptUrls.forEach(url => handleScriptLoad(url, onAllScriptsLoaded));
+
+// Define success and error handlers (optional)
+function onAllScriptsLoaded() {
+  console.log('All scripts loaded successfully');
+  // Update checked Pokemons initially
+  updateCheckedPokemons();
+
+  // Event handler for filter checkboxes
+  $(document).on("change", ".filter_checkbox input[type='checkbox']", function() {
+    updateCheckedPokemons();
+  });
+
+  // Update PvP IV list initially
+  updatePvpIvList();
+
+  // Event handler for league selector
+  $(document).on("change", "input[name='pvp_leage_selector']", function() {
+    updatePvpIvList();
+  });
+
+  // Event handler for deselect all button
+  $("#deselect_all_btn").click(function() {
+    updateCheckedPokemons();
+    updatePvpIvList();
+  });
+
+  // Event handler for top number input
+  $("#pvp_top_number").on("change", function() {
+    ivsArrMax = $(this).val();
+    updatePvpIvList();
+  });
+}

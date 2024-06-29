@@ -24,10 +24,10 @@ var isFilterForm = false;
 var timeLessFilter = Number.MAX_VALUE;
 var timeMoreFilter = 0;
 var isNonBoosted = false;
-var regex12pm = /04\:00\:00 GMT$/g;
-var regex1pm = /05\:00\:00 GMT$/g;
-var regex5pm = /09\:00\:00 GMT$/g;
-var regex6pm = /10\:00\:00 GMT$/g;
+var regex12pm = /04\:0[0-9]\:00 GMT$/g;
+var regex1pm = /05\:0[0-9]\:00 GMT$/g;
+var regex5pm = /09\:0[0-9]\:00 GMT$/g;
+var regex6pm = /10\:0[0-9]\:00 GMT$/g;
 var isFilterMRT = false;
 var isFilterMall = false;
 
